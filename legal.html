@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Documentation | Vaisiri Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Professional Document Theme Overrides */
+        :root {
+            --doc-bg: #eef2f6;
+            --doc-card: #ffffff;
+            --doc-text: #1f2937;
+            --doc-muted: #6b7280;
+            --doc-accent: #2563eb;
+            --doc-border: #e5e7eb;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Professional Gradient Mix */
+            background: linear-gradient(to bottom right, #E0EAFC, #CFDEF3);
+            min-height: 100vh;
+            color: var(--doc-text);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Clean Navbar */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--doc-border);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            color: var(--doc-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #f9fafb;
+            border-color: var(--doc-muted);
+        }
+
+        /* Document Layout */
+        .legal-wrapper {
+            max-width: 800px;
+            margin: 100px auto 60px;
+            padding: 0 20px;
+        }
+
+        .legal-card {
+            background: var(--doc-card);
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--doc-border);
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .last-updated {
+            font-size: 0.875rem;
+            color: var(--doc-muted);
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--doc-border);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p, li {
+            color: #4b5563;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--doc-muted);
+            font-size: 0.875rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--doc-border);
+            margin-top: 4rem;
+        }
+
+        .print-btn {
+            background: #ffffff;
+            border: 1px solid var(--doc-border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--doc-text);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .print-btn:hover {
+            background: #f9fafb;
+            color: var(--doc-accent);
+            border-color: var(--doc-accent);
+        }
+
+        @media print {
+            .navbar, .back-btn, footer, .print-btn { display: none; }
+            body { background: white; }
+            .legal-wrapper { margin: 0; padding: 0; max-width: 100%; }
+            .legal-card { box-shadow: none; border: none; padding: 0; margin-bottom: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-shield-alt"></i> Legal Center</a>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
+        </div>
+    </nav>
+
+    <div class="legal-wrapper">
+        
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 1.5rem;">
+            <button onclick="window.print()" class="print-btn"><i class="fas fa-print"></i> Print Policy</button>
+        </div>
+        
+        <!-- Privacy Policy Section -->
+        <div id="privacy" class="legal-card">
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last Updated: <span class="dynamic-date"></span></p>
+
+            <p>Thank you for visiting the professional portfolio of Lalith. We value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website.</p>
+
+            <h2>1. Information We Collect</h2>
+            <p>We may collect personal information that you voluntarily provide to us when you use the "Contact" section of the website. This includes:</p>
+            <ul>
+                <li><strong>Personal Identification:</strong> Name, email address.</li>
+                <li><strong>Communication Data:</strong> The content of messages you send via the contact form.</li>
+            </ul>
+
+            <h2>2. How We Use Your Information</h2>
+            <p>The information collected is used solely for the following professional purposes:</p>
+            <ul>
+                <li>To respond to your inquiries, project proposals, or collaboration requests.</li>
+                <li>To maintain professional communication regarding potential employment or freelance opportunities.</li>
+            </ul>
+
+            <h2>3. Data Security</h2>
+            <p>We implement appropriate technical and organizational security measures to protect your data. However, please be aware that no electronic transmission over the Internet is 100% secure. While we strive to use commercially acceptable means to protect your personal information, we cannot guarantee its absolute security.</p>
+        </div>
+
+        <!-- Terms of Service Section -->
+        <div id="terms" class="legal-card">
+            <h1>Terms of Service</h1>
+            <p class="last-updated">Effective Date: <span class="dynamic-date"></span></p>
+
+            <p>By accessing and using this website, you agree to comply with and be bound by the following terms and conditions.</p>
+
+            <h2>1. Intellectual Property Rights</h2>
+            <p>Unless otherwise indicated, the website and its entire contents, features, and functionality (including but not limited to all software, code, text, displays, images, video, and audio) are owned by Lalith (TechBoy Limited) and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</p>
+
+            <h2>2. Use of Portfolio Content</h2>
+            <p>This website is provided for informational and professional portfolio purposes only. You may not:</p>
+            <ul>
+                <li>Reproduce, distribute, modify, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any of the material on our website without prior written consent.</li>
+                <li>Use any illustrations, photographs, video or audio sequences, or any graphics separately from the accompanying text.</li>
+            </ul>
+
+            <h2>3. Disclaimer of Warranties</h2>
+            <p>The information presented on or through the website is made available solely for general information purposes. We do not warrant the accuracy, completeness, or usefulness of this information. Any reliance you place on such information is strictly at your own risk.</p>
+
+            <h2>4. Limitation of Liability</h2>
+            <p>In no event will the website owner be liable for damages of any kind, under any legal theory, arising out of or in connection with your use, or inability to use, the website, including any direct, indirect, special, incidental, consequential, or punitive damages.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container" style="justify-content: center;">
+            <p>&copy; 2026 Lalith. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Force smooth scroll animation on page load if a hash is present
+        document.addEventListener("DOMContentLoaded", function() {
+            if (window.location.hash) {
+                const target = document.querySelector(window.location.hash);
+                if (target) {
+                    window.scrollTo(0, 0); // Reset to top immediately to allow animation
+                    setTimeout(() => {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            }
+
+            // Automatically set current date
+            const dateSpans = document.querySelectorAll('.dynamic-date');
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date().toLocaleDateString('en-US', options);
+            
+            dateSpans.forEach(span => {
+                span.textContent = today;
+            });
+        });
+    </script>
+</body>
+</html>
