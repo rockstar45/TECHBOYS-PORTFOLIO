@@ -27,7 +27,7 @@ body {
     overflow-x: hidden;
 }
 
-#three-bg {
+#matrix-bg {
     position: fixed;
     top: 0;
     left: 0;
@@ -156,33 +156,50 @@ body::before {
     letter-spacing: 2px;
     transition: all 0.2s ease;
     position: relative;
-    box-shadow: 6px 6px 0px var(--accent);
     border-radius: 0;
-    animation: pulseGlow 2s infinite;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+    animation: pulseGlow 1.5s infinite;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
 }
 
 .btn-primary:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 10px 10px 0px var(--accent);
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.8);
     text-shadow: 1px 1px 0px rgba(255,255,255,0.4);
 }
 
 .btn-primary:active {
-    transform: translate(2px, 2px);
-    box-shadow: 0px 0px 0px var(--accent);
+    transform: scale(0.95);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
 }
 
 /* Button Pulse Animations */
 @keyframes pulseGlow {
-    0% { box-shadow: 6px 6px 0px var(--accent); }
-    50% { box-shadow: 6px 6px 20px var(--primary), 0 0 10px var(--primary); }
-    100% { box-shadow: 6px 6px 0px var(--accent); }
+    0% { box-shadow: 0 0 15px rgba(0, 255, 65, 0.4); }
+    50% { box-shadow: 0 0 30px rgba(0, 255, 65, 0.8), 0 0 5px var(--accent); }
+    100% { box-shadow: 0 0 15px rgba(0, 255, 65, 0.4); }
 }
 
 @keyframes pulseGlowWhite {
-    0% { box-shadow: 0 0 0 var(--white); }
-    50% { box-shadow: 0 0 20px var(--white), 0 0 10px var(--accent); }
-    100% { box-shadow: 0 0 0 var(--white); }
+    0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+    50% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.7), 0 0 5px var(--accent); }
+    100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
 }
 
 /* Hero Section */
@@ -283,37 +300,58 @@ body::before {
     transform-style: preserve-3d;
 }
 
-/* --- 3D Rotating Rings Animation --- */
+/* --- Professional 3D Border Animation --- */
 
-/* 1. Outer Dashed Ring */
+/* 1. Main Border with Scanner */
 .ring-outer-dashed {
     position: absolute;
     width: 380px;
     height: 380px;
     border-radius: 50%;
-    border: 2px dashed rgba(0, 255, 65, 0.3);
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3), inset 0 0 15px rgba(0, 255, 65, 0.2);
     z-index: 1;
     pointer-events: none;
-    animation: spin-slow 20s linear infinite;
+    animation: spin-slow 25s linear infinite;
 }
 
-/* 2. Inner Glowing Ring */
+.ring-outer-dashed::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    width: 20px;
+    height: 4px;
+    margin-left: -10px;
+    background: var(--accent);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent);
+    animation: scanner 5s linear infinite;
+}
+
+@keyframes scanner {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(calc(380px - 4px)) rotate(0deg); }
+    26% { transform: translateY(calc(380px - 4px)) rotate(180deg); }
+    50% { transform: translateY(0) rotate(180deg); }
+    51% { transform: translateY(0) rotate(360deg); }
+}
+
+
+/* 2. Inner Glowing Dashed Ring */
 .ring-inner-glow {
     position: absolute;
     width: 340px;
     height: 340px;
     border-radius: 50%;
-    border: 1px solid rgba(0, 234, 255, 0.4);
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-    box-shadow: 0 0 30px rgba(0, 234, 255, 0.2);
+    border: 1px dashed rgba(0, 234, 255, 0.4);
+    box-shadow: 0 0 30px rgba(0, 234, 255, 0.1);
     z-index: 1;
     pointer-events: none;
-    animation: spin-reverse 10s linear infinite;
+    animation: spin-reverse 12s linear infinite;
 }
 
-/* 3. Orbiting Particle Ring */
+/* 3. Orbiting HUD elements */
 .ring-orbit {
     position: absolute;
     width: 420px;
@@ -321,20 +359,23 @@ body::before {
     border-radius: 50%;
     z-index: 1;
     pointer-events: none;
-    animation: spin-tilt 15s linear infinite;
+    animation: spin-tilt 18s linear infinite;
+    border: 1px solid transparent; /* for positioning pseudo-elements */
 }
 
-.ring-orbit::before {
-    content: '';
+.ring-orbit::before, .ring-orbit::after {
+    content: '||';
+    font-family: 'Orbitron', monospace;
     position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 10px;
-    height: 10px;
-    background: var(--secondary);
-    border-radius: 50%;
-    box-shadow: 0 0 15px var(--secondary), 0 0 30px var(--secondary);
+    font-size: 1rem;
+    color: var(--secondary);
+    text-shadow: 0 0 10px var(--secondary);
+    animation: blink 2s infinite;
 }
+
+.ring-orbit::before { top: 10%; left: 10%; }
+.ring-orbit::after { bottom: 10%; right: 10%; transform: rotate(180deg); }
+
 
 @keyframes spin-slow {
     100% { transform: rotate(360deg); }
@@ -345,8 +386,12 @@ body::before {
 }
 
 @keyframes spin-tilt {
-    0% { transform: rotateX(60deg) rotateY(0deg); }
-    100% { transform: rotateX(60deg) rotateY(360deg); }
+    0% { transform: rotateX(70deg) rotateY(0deg); }
+    100% { transform: rotateX(70deg) rotateY(360deg); }
+}
+
+@keyframes blink {
+    50% { opacity: 0.3; }
 }
 
 .user-photo {
@@ -354,11 +399,17 @@ body::before {
     height: 320px;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 50px rgba(0, 255, 65, 0.2);
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 50px rgba(0, 234, 255, 0.4);
     z-index: 2;
-    backdrop-filter: blur(5px);
-    transition: transform 0.3s ease;
+    backdrop-filter: blur(8px);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transform: translateZ(10px);
+}
+
+.user-photo:hover {
+    transform: translateZ(30px) scale(1.05);
+    box-shadow: 0 0 80px rgba(0, 234, 255, 0.7);
 }
 
 .hero h1 {
@@ -475,7 +526,7 @@ body::before {
 .btn-secondary {
     background: transparent;
     border: 2px solid var(--white);
-    color: var(--white);
+    color: var(--white) !important;
     padding: 1rem 2.5rem;
     clip-path: polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%);
     border-radius: 0;
@@ -484,14 +535,35 @@ body::before {
     text-transform: uppercase;
     letter-spacing: 2px;
     transition: var(--transition);
-    animation: pulseGlowWhite 3s infinite;
+    position: relative;
+    overflow: hidden;
+    animation: pulseGlowWhite 2s infinite;
+}
+
+.btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.4), transparent);
+    transition: 0.5s;
 }
 
 .btn-secondary:hover {
     background: var(--white);
-    color: #000;
-    box-shadow: 0 0 20px var(--white);
-    transform: translateY(-2px);
+    color: #000 !important;
+    box-shadow: 0 0 30px var(--white);
+    transform: scale(1.05);
+}
+
+.btn-secondary:hover::before {
+    left: 100%;
+}
+
+.btn-secondary:active {
+    transform: scale(0.95);
 }
 
 /* About Section */
@@ -1770,6 +1842,8 @@ footer {
         flex-direction: column;
         padding: 2rem 0;
         border-bottom: 1px solid var(--card-border);
+        overflow-y: auto;
+        max-height: 80vh; /* Prevent menu cut-off on small screens */
     }
     .nav-links.active {
         display: flex;
@@ -1783,8 +1857,9 @@ footer {
     .menu-toggle {
         display: block;
     }
+    /* Hero Section Mobile Adjustments */
     .hero h1 {
-        font-size: 3rem;
+        font-size: 2.5rem; /* Smaller font for mobile */
     }
     .hero p {
         font-size: 1rem;
@@ -1798,6 +1873,32 @@ footer {
         justify-content: center;
         text-align: center;
     }
+    .hero-visual {
+        margin-bottom: 2rem;
+        width: 100%;
+        height: auto;
+    }
+    /* Resize 3D Rings for Mobile to prevent overflow */
+    .photo-wrapper {
+        width: 280px;
+        height: 280px;
+    }
+    .ring-outer-dashed {
+        width: 260px;
+        height: 260px;
+    }
+    .ring-inner-glow {
+        width: 240px;
+        height: 240px;
+    }
+    .ring-orbit {
+        width: 300px;
+        height: 300px;
+    }
+    .ring-orbit::before {
+        top: 40px;
+        left: 40px;
+    }
     .hero-content {
         text-align: center;
         margin-top: 2rem;
@@ -1806,8 +1907,24 @@ footer {
         justify-content: center;
     }
     .user-photo {
-        width: 250px;
-        height: 250px;
+        width: 220px;
+        height: 220px;
+    }
+    /* Fix Contact Form & Tools Stacking */
+    .contact-wrapper {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .contact-form, .kali-tools {
+        min-width: 100%;
+        width: 100%;
+    }
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    .section-padding {
+        margin: 2rem 10px;
+        padding: 4rem 0;
     }
     .timeline::after {
         left: 31px;
@@ -2117,6 +2234,166 @@ footer {
     background: #333;
     border-radius: 4px;
 }
+
+/* Safety Tips Section */
+#safety-tips {
+    border-color: #ffd700; /* Gold */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.1);
+}
+
+/* 3D Header for Safety Tips */
+#safety-tips .section-header {
+    perspective: 1000px;
+}
+
+#safety-tips .section-header h2 {
+    color: #ffd700;
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 
+        0 1px 0 #b39700,
+        0 2px 0 #998100,
+        0 3px 0 #806c00,
+        0 0 20px rgba(255, 215, 0, 0.5);
+    transform: rotateX(10deg);
+    animation: safetyPulse 3s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes safetyPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); text-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    perspective: 1000px;
+}
+
+.tip-card {
+    background-color: transparent;
+    height: 350px; /* Increased height for more content */
+    perspective: 1000px;
+    cursor: pointer;
+    --tip-color: #ffd700; /* Default Fallback */
+}
+
+/* Unique Colors for Cards - Specific Overrides (Moved below to fix bug) */
+.tip-card.type-phishing { --tip-color: #ff4757; } /* Red */
+.tip-card.type-identity { --tip-color: #2e86de; } /* Blue */
+.tip-card.type-patch { --tip-color: #ff9f43; }    /* Orange */
+.tip-card.type-network { --tip-color: #a55eea; }  /* Purple */
+.tip-card.type-social { --tip-color: #ff6b81; }   /* Pink */
+.tip-card.type-data { --tip-color: #0abde3; }     /* Cyan */
+
+.tip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); /* Professional Smooth Ease */
+    transform-style: preserve-3d;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-radius: 15px;
+}
+
+.tip-card:hover .tip-inner {
+    transform: rotateY(180deg);
+}
+
+.tip-front, .tip-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.tip-front {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(10, 10, 10, 0.98));
+    backdrop-filter: blur(10px);
+}
+
+.tip-back {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    transform: rotateY(180deg);
+    border: 1px solid var(--tip-color);
+    box-shadow: 0 0 30px var(--tip-color), inset 0 0 20px rgba(0,0,0,0.8);
+}
+
+.tip-icon-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    border: 2px solid var(--tip-color);
+    box-shadow: 0 0 20px var(--tip-color), inset 0 0 10px var(--tip-color);
+    transition: all 0.3s ease;
+}
+
+.tip-card:hover .tip-icon-circle {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px var(--tip-color), inset 0 0 20px var(--tip-color);
+    background: rgba(0,0,0,0.5);
+    border-color: #fff;
+}
+
+.tip-front i {
+    font-size: 4rem;
+    background: linear-gradient(135deg, var(--tip-color) 0%, #ffffff 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px var(--tip-color));
+    transition: all 0.3s ease;
+}
+
+.tip-card:hover .tip-front i {
+    -webkit-text-fill-color: var(--tip-color);
+    filter: drop-shadow(0 0 25px var(--tip-color));
+    transform: scale(1.1);
+}
+
+.tip-front h3 {
+    font-size: 1.5rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.tip-back h3 {
+    color: var(--tip-color);
+    margin-bottom: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    border-bottom: 1px solid var(--tip-color);
+    padding-bottom: 0.5rem;
+    transform: translateZ(30px); /* 3D Depth for Text */
+    text-shadow: 0 0 10px var(--tip-color);
+}
+
+.tip-back p {
+    color: #cccccc;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    transform: translateZ(20px); /* 3D Depth for Text */
+    text-align: justify;
+}
+
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
 }
@@ -2125,7 +2402,7 @@ footer {
     display: inline-block;
     color: var(--primary);
     animation: blink 1s infinite;
-    font-weight: 100;
+    font-weight: 700;
 }
 
 @keyframes blink {
@@ -2133,44 +2410,32 @@ footer {
     50% { opacity: 0; }
 }
 
-.cursor.typing {
-    animation: none;
-    opacity: 1;
-}
-
-/* Back to Top Button */
 .back-to-top {
-    position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 50px;
-    height: 50px;
-    background: rgba(10, 10, 10, 0.8);
-    border: 2px solid var(--primary);
-    color: var(--primary);
+    position: fixed;
+    width: 45px;
+    height: 45px;
+    background: var(--primary);
+    border: none;
     border-radius: 50%;
-    font-size: 1.2rem;
+    color: #000;
     cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 9999;
-    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 9998;
 }
 
 .back-to-top.active {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
 }
 
 .back-to-top:hover {
-    background: var(--primary);
-    color: #000;
-    box-shadow: 0 0 30px var(--primary), 0 0 60px var(--primary);
-    transform: translateY(-10px) scale(1.1) rotate(360deg);
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px var(--primary);
 }

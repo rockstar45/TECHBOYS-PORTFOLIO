@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TECHBOY | Cyber Security Portfolio</title>
     <!-- Cyber Crime Theme Favicon (Red Skull) -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23050505'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%23ff0055'%3E%E2%98%A0%EF%B8%8F%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" type="image/svg+xml">
     <link rel="stylesheet" href="style.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <div id="three-bg"></div>
+    <canvas id="matrix-bg"></canvas>
 
     <!-- Navbar -->
     <nav class="navbar">
@@ -285,6 +285,96 @@
         </div>
     </section>
 
+    <!-- Cyber Safety Tips Section -->
+    <section class="section-padding" id="safety-tips">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Cyber Safety Protocols</h2>
+                <p>Interactive defensive countermeasures.</p>
+            </div>
+            <div class="tips-grid">
+                <!-- Tip 1: Phishing -->
+                <div class="tip-card reveal type-phishing">
+                    <div class="tip-inner">
+                        <div class="tip-front">
+                            <div class="tip-icon-circle"><i class="fas fa-envelope-open-text"></i></div>
+                            <h3>Email Security</h3>
+                        </div>
+                        <div class="tip-back">
+                            <h3>Header Analysis</h3>
+                            <p>Validate SPF, DKIM, and DMARC records. Inspect email headers for spoofing. Sandbox attachments before execution. Verify 'urgent' requests via out-of-band voice channels.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tip 2: Passwords -->
+                <div class="tip-card reveal type-identity">
+                    <div class="tip-inner">
+                        <div class="tip-front">
+                            <div class="tip-icon-circle"><i class="fas fa-key"></i></div>
+                            <h3>IAM Protocols</h3>
+                        </div>
+                        <div class="tip-back">
+                            <h3>Access Control</h3>
+                            <p>Enforce MFA (YubiKey/TOTP). Rotate API keys regularly. Use 20+ char passphrases. Monitor for credential stuffing. Implement Least Privilege Access principles.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tip 3: Updates -->
+                <div class="tip-card reveal type-patch">
+                    <div class="tip-inner">
+                        <div class="tip-front">
+                            <div class="tip-icon-circle"><i class="fas fa-sync-alt"></i></div>
+                            <h3>System Hardening</h3>
+                        </div>
+                        <div class="tip-back">
+                            <h3>Vuln Management</h3>
+                            <p>Automate critical CVE patching (<24h). Remove bloatware and disable unused services. Audit third-party dependencies. Maintain an accurate real-time asset inventory.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tip 4: Public Wi-Fi -->
+                <div class="tip-card reveal type-network">
+                    <div class="tip-inner">
+                        <div class="tip-front">
+                            <div class="tip-icon-circle"><i class="fas fa-wifi"></i></div>
+                            <h3>Zero Trust Net</h3>
+                        </div>
+                        <div class="tip-back">
+                            <h3>Segmentation</h3>
+                            <p>Assume breach. Segment networks via VLANs. Encrypt internal traffic (mTLS). Disable UPnP. Use VPNs with Kill Switches. Monitor egress traffic for data exfiltration.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tip 5: Social Engineering (New) -->
+                <div class="tip-card reveal type-social">
+                    <div class="tip-inner">
+                        <div class="tip-front">
+                            <div class="tip-icon-circle"><i class="fas fa-user-shield"></i></div>
+                            <h3>Human Firewall</h3>
+                        </div>
+                        <div class="tip-back">
+                            <h3>Counter-OSINT</h3>
+                            <p>Limit public profile data on LinkedIn. Verify caller identities. Be wary of USB drops (Baiting). Train staff to recognize pretexting, tailgating, and fear tactics.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tip 6: Data Resilience (New) -->
+                <div class="tip-card reveal type-data">
+                    <div class="tip-inner">
+                        <div class="tip-front">
+                            <div class="tip-icon-circle"><i class="fas fa-database"></i></div>
+                            <h3>Data Sovereignty</h3>
+                        </div>
+                        <div class="tip-back">
+                            <h3>Disaster Recovery</h3>
+                            <p>Follow 3-2-1 Backup Rule. Store immutable copies offline (Air-gapped) to defeat Ransomware. Encrypt data at rest (AES-256). Test restoration drills quarterly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section class="section-padding" id="contact">
         <div class="container">
@@ -417,8 +507,7 @@
     <!-- Back to Top Button -->
     <button id="back-to-top" class="back-to-top" title="Back to Top"><i class="fas fa-arrow-up"></i></button>
 
-    <!-- Three.js for 3D Models -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
     <!-- Vanilla Tilt for 3D Effects -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <script src="script.js"></script>
