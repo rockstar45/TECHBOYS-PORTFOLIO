@@ -17,6 +17,8 @@
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #333 var(--bg-color);
 }
 
 body {
@@ -34,6 +36,16 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
+    pointer-events: none;
+}
+
+#three-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
     pointer-events: none;
 }
 
@@ -204,7 +216,8 @@ body::before {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh; /* Mobile browser support */
     background: transparent;
     position: relative;
     display: flex;
@@ -681,7 +694,7 @@ body::before {
 
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2.5rem;
 }
 
@@ -2286,7 +2299,7 @@ footer {
 
 .tips-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2.5rem;
     perspective: 1000px;
 }

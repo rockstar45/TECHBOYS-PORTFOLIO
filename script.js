@@ -16,6 +16,13 @@ menuToggle.addEventListener('click', () => {
     navLinks.classList.toggle('active');
 });
 
+// Close Mobile Menu when a link is clicked
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+    });
+});
+
 // Scroll Reveal Animation
 const revealElements = document.querySelectorAll('.reveal');
 
@@ -47,122 +54,145 @@ window.addEventListener('scroll', () => {
     animateSkills();
 });
 
-// Matrix Rain Background
-const initMatrixBackground = () => {
-    const canvas = document.getElementById('matrix-bg');
-    if (!canvas) return;
+// Global Three.js Background
+const initGlobalThreeJS = () => {
+    const container = document.getElementById('three-bg');
+    if (!container) return;
 
-    const ctx = canvas.getContext('2d');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
 
-    // Set canvas dimensions
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Particles (Stars)
+    const particlesCount = 200; // Reduced count for performance with lines
+    const particlesGeometry = new THREE.BufferGeometry();
+    const posArray = new Float32Array(particlesCount * 3);
 
-    // Characters for the matrix rain
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*<>[]{}";
-    const charArray = chars.split('');
-
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-
-    // Y-position for each column
-    const drops = [];
-    for (let x = 0; x < columns; x++) {
-        drops[x] = 1;
+    for(let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 50; // Spread particles
     }
 
-    // Glow and mouse interaction variables
-    let mouseX = -100;
-    let mouseY = -100;
-    const glowRadius = 150; // Radius of the interactive glow
-    const baseGlowRadius = 50; // Smaller radius for the character glow
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-    canvas.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+    const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.15,
+        color: 0x00ff41, // Hacker Green
+        transparent: true,
+        opacity: 0.8,
     });
 
-    canvas.addEventListener('mouseleave', () => {
-        mouseX = -100;
-        mouseY = -100;
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    // Constellation Lines
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x00ff41, // Hacker Green
+        transparent: true,
+        opacity: 0.2
+    });
+    const lineGeometry = new THREE.BufferGeometry();
+    const maxLines = 3000; // Limit lines for performance
+    const linePositions = new Float32Array(maxLines * 2 * 3);
+    lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+    const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(linesMesh);
+
+    camera.position.z = 10;
+
+    // Mouse Interaction
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetSpeed = 0.05;
+    let speed = 0.05;
+
+    window.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
     });
 
-    function draw() {
-        // Semi-transparent black background for the fading effect
-        ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Warp Speed on Click
+    window.addEventListener('mousedown', () => { targetSpeed = 0.8; });
+    window.addEventListener('mouseup', () => { targetSpeed = 0.05; });
 
-        // Loop through each column
-        for (let i = 0; i < drops.length; i++) {
-            const x = i * fontSize;
-            const y = drops[i] * fontSize;
-            const text = charArray[Math.floor(Math.random() * charArray.length)];
+    const animate = () => {
+        requestAnimationFrame(animate);
 
-            const distanceToMouse = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
+        // Hacker Pulse Effect
+        const time = Date.now() * 0.003;
+        lineMaterial.opacity = 0.2 + Math.sin(time) * 0.1;
+        lineMaterial.color.setHSL(0.33, 1, 0.5 + Math.sin(time * 3) * 0.2); // Pulse brightness
 
-            // Default state
-            let primaryColor = '#00ff41'; // Hacker Green
-            let secondaryColor = '#00802B'; // Darker Green
-            let currentFontSize = fontSize;
+        // Smooth speed transition
+        speed += (targetSpeed - speed) * 0.1;
 
-            // Interactive state
-            if (distanceToMouse < glowRadius) {
-                const proximity = 1 - (distanceToMouse / glowRadius);
-                primaryColor = `rgba(0, 255, 234, ${0.6 + proximity * 0.4})`; // Accent (Cyber Cyan) with opacity
-                secondaryColor = `rgba(214, 0, 255, ${0.4 + proximity * 0.6})`; // Secondary (Neon Purple) with opacity
-                currentFontSize = fontSize + (proximity * 8); // Make text bigger near the mouse
-                
-                // Draw the main glow effect around the mouse
-                const gradient = ctx.createRadialGradient(mouseX, mouseY, baseGlowRadius, mouseX, mouseY, glowRadius);
-                gradient.addColorStop(0, `rgba(0, 234, 255, ${proximity * 0.2})`);
-                gradient.addColorStop(1, 'rgba(0, 234, 255, 0)');
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(mouseX, mouseY, glowRadius, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            // Draw the character
-            ctx.font = `${currentFontSize}px 'Orbitron', monospace`;
+        const positions = particlesMesh.geometry.attributes.position.array;
+        
+        // Move particles
+        for(let i = 0; i < particlesCount; i++) {
+            // Z movement (Warp)
+            positions[i * 3 + 2] += speed;
             
-            // First character in column is brighter (the "drop")
-            if (drops[i] * fontSize > canvas.height * Math.random() && Math.random() > 0.975) {
-                ctx.fillStyle = primaryColor;
-                ctx.shadowColor = primaryColor;
-                ctx.shadowBlur = 15;
-            } else {
-                ctx.fillStyle = secondaryColor;
-                ctx.shadowBlur = 0;
+            // Reset if passed camera
+            if(positions[i * 3 + 2] > 10) {
+                positions[i * 3 + 2] = -40;
+                positions[i * 3] = (Math.random() - 0.5) * 50;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 50;
             }
             
-            ctx.fillText(text, x, y);
-
-            // Reset column or move it down
-            if (y > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
+            // Mouse parallax
+            positions[i * 3] += -mouseX * 0.05;
+            positions[i * 3 + 1] += mouseY * 0.05;
         }
-    }
+        
+        particlesMesh.geometry.attributes.position.needsUpdate = true;
 
-    const interval = setInterval(draw, 40);
+        // Update Lines (Constellation)
+        let lineIndex = 0;
+        const connectDistance = 7;
 
-    // Handle window resize
+        for (let i = 0; i < particlesCount; i++) {
+            for (let j = i + 1; j < particlesCount; j++) {
+                const dx = positions[i * 3] - positions[j * 3];
+                const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+                const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+                const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+                if (dist < connectDistance) {
+                    if (lineIndex < maxLines) {
+                        // Point 1
+                        linePositions[lineIndex * 6] = positions[i * 3];
+                        linePositions[lineIndex * 6 + 1] = positions[i * 3 + 1];
+                        linePositions[lineIndex * 6 + 2] = positions[i * 3 + 2];
+                        // Point 2
+                        linePositions[lineIndex * 6 + 3] = positions[j * 3];
+                        linePositions[lineIndex * 6 + 4] = positions[j * 3 + 1];
+                        linePositions[lineIndex * 6 + 5] = positions[j * 3 + 2];
+                        lineIndex++;
+                    }
+                }
+            }
+        }
+        
+        linesMesh.geometry.setDrawRange(0, lineIndex * 2);
+        linesMesh.geometry.attributes.position.needsUpdate = true;
+
+        renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // Handle Resize
     window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        // Recalculate columns, but don't reset drops to avoid a jarring refresh
-        const newColumns = Math.floor(canvas.width / fontSize);
-        while (drops.length < newColumns) {
-            drops.push(1);
-        }
-        while (drops.length > newColumns) {
-            drops.pop();
-        }
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
     });
 };
 
-initMatrixBackground();
+initGlobalThreeJS();
 
 // Cyber Matrix Background Animation
 const initCyberMatrix = () => {
