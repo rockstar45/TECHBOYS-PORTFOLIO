@@ -67,7 +67,7 @@ const initGlobalThreeJS = () => {
     container.appendChild(renderer.domElement);
 
     // Particles (Stars)
-    const particlesCount = 200; // Reduced count for performance with lines
+    const particlesCount = 450; // Increased for full background effect
     const particlesGeometry = new THREE.BufferGeometry();
     const posArray = new Float32Array(particlesCount * 3);
 
@@ -94,7 +94,7 @@ const initGlobalThreeJS = () => {
         opacity: 0.2
     });
     const lineGeometry = new THREE.BufferGeometry();
-    const maxLines = 3000; // Limit lines for performance
+    const maxLines = 5000; // Increased limit for denser connections
     const linePositions = new Float32Array(maxLines * 2 * 3);
     lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
     const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
@@ -199,29 +199,52 @@ const initCyberMatrix = () => {
     const container = document.getElementById('cyber-matrix-bg');
     if (!container) return;
 
-    const rows = 18;
+    // Clear existing content
+    container.innerHTML = '';
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    container.appendChild(canvas);
+
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*<>[]{}";
-    
-    // Generate Matrix Rows
-    for (let i = 0; i < rows; i++) {
-        const row = document.createElement('div');
-        row.className = 'matrix-row';
-        let text = "";
-        for (let j = 0; j < 45; j++) {
-            text += chars.charAt(Math.floor(Math.random() * chars.length)) + " ";
-        }
-        row.textContent = text;
-        // Random animation delay for natural feel
-        row.style.animationDelay = `${Math.random() * 5}s`;
-        container.appendChild(row);
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+
+    const drops = [];
+    for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
     }
 
-    // Parallax Depth Effect
-    document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 15; // Subtle movement
-        const y = (e.clientY / window.innerHeight - 0.5) * 15;
-        
-        container.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+    const draw = () => {
+        // Fade out to transparent to reveal the underlying Three.js background
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = '#0F0'; // Hacker Green
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars.charAt(Math.floor(Math.random() * chars.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    };
+
+    setInterval(draw, 33);
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     });
 };
 
